@@ -2,7 +2,7 @@
 
 A prank lockscreen for windows 10.
 
-Running smokescreen.exe will "lock" your computer and intercept all inputs.
+Running smokescreen.exe will show a static picture of your screen and intercept all inputs.
 When any key or mouse button is pressed, it shows a fake bluescreen and then locks your computer after a few seconds.
 
 Do not actually use this as your proper lockscreen, this is likely way unsafe and there are definitly ways to circumvent it!
