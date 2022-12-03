@@ -20,6 +20,8 @@ powershell -ExecutionPolicy Bypass -File .\command.ps1
 ```
 
 We can then use VLC to record from our webcam. The following command will use the default audio and video input device to record a 15 second video.
+
+command.ps1:
 ```
 $filename = [dateTime]::Now.ToFileTime()
 $filename = "..\\${filename}.mp4"
