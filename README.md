@@ -7,7 +7,7 @@ When any key or mouse button is pressed, it shows a fake bluescreen and then loc
 
 Do not actually use this as your proper lockscreen, this is likely way unsafe and there are definitly ways to circumvent it!
 
-You can press the 'Home' key to go straight bypass the bluescreen and lock your computer.
+You can press the 'Home' key to bypass the bluescreen and lock your computer right away.
 
 # fun things
 
