@@ -2,24 +2,26 @@
 
 A prank lockscreen for windows 10.
 
-When you start this program it will "lock" your computer and intercept all inputs.
-When any key or mouse button is pressed, a fake bluescreen is shown and after a few seconds your computer is locked.
+Running smokescreen.exe will "lock" your computer and intercept all inputs.
+When any key or mouse button is pressed, it shows a fake bluescreen and then locks your computer after a few seconds.
 
-Do not actually use this as your proper lockscreen, there are definitly ways to circumvent it!
+Do not actually use this as your proper lockscreen, this is likely way unsafe and there are definitly ways to circumvent it!
 
 You can press the 'Home' key to go straight bypass the bluescreen and lock your computer.
 
 # fun things
 
 You can put a file named 'command.bat' next to the smokescreen binary and when the bluescreen is triggered this batch file will be run.
-In all examples from here on, we will assume that command.bat is used to call a powershell script and then do fun things with that.
+In all examples from here on, we will assume that command.bat simply calls a powershell script and then do fun things from there.
 
 command.bat:
 ```
 powershell -ExecutionPolicy Bypass -File .\command.ps1
 ```
 
-We can then use VLC to record from our webcam. The following command will use the default audio and video input device to record a 15 second video.
+## recording our webcam
+We can use VLC to record from our webcam to an mp4 file.
+The following command will use the default audio and video input device to record a 15 second video.
 
 command.ps1:
 ```
