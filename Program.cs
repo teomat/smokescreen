@@ -1,5 +1,8 @@
+using System.CommandLine;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Windows.Storage;
+using Windows.System.UserProfile;
 
 namespace smokescreen;
 
@@ -10,8 +13,43 @@ static class Program
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
-    [STAThread]
-    static void Main()
+    static async Task Main(string[] args)
+    {
+        // root command
+        var rootCommand = new RootCommand("A prank lockscreen");
+        rootCommand.SetHandler(RunSmokescreen);
+
+        // lockscreen image subcommand
+        var lockscreenCommand = new Command("setlockscreen", "Set the lockscreen image");
+        var fileArgument = new Argument<FileInfo>(
+            name: "image path",
+            description: "Path of the image to set as the lockscreen.");
+        lockscreenCommand.AddArgument(fileArgument);
+        lockscreenCommand.SetHandler(async (file) =>
+        {
+            await SetLockscreenImage(file.FullName);
+        }, fileArgument);
+
+        // run the thing
+        rootCommand.AddCommand(lockscreenCommand);
+        await rootCommand.InvokeAsync(args);
+    }
+
+    static async Task SetLockscreenImage(string path)
+    {
+        var folder = Path.GetDirectoryName(path);
+        var file = Path.GetFileName(path);
+
+        var sf = await StorageFolder.GetFolderFromPathAsync(folder);
+        var imgFile = await sf.GetFileAsync(file);
+
+        using (var stream = await imgFile.OpenAsync(FileAccessMode.Read))
+        {
+            await LockScreen.SetImageStreamAsync(stream);
+        }
+    }
+
+    static void RunSmokescreen()
     {
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
@@ -40,8 +78,16 @@ static class Program
         [DllImport("kernel32")]
         public static extern IntPtr GetModuleHandle(string name);
 
+        [DllImport("kernel32")]
+        public static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         public const int WH_KEYBOARD_LL = 13;
         public const int WM_KEYDOWN = 0x0100;
+        public const int SW_HIDE = 0;
+        public const int SW_SHOW = 5;
     }
 
     class SmokescreenAppContext : ApplicationContext
@@ -52,6 +98,9 @@ static class Program
 
         public SmokescreenAppContext()
         {
+            var consoleWindow = Win32.GetConsoleWindow();
+            Win32.ShowWindow(consoleWindow, Win32.SW_HIDE);
+
             KeyboardProc = KeyboardProcCallback;
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule!)
