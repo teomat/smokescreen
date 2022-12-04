@@ -11,7 +11,7 @@ You can press the 'Home' key to bypass the bluescreen and lock your computer rig
 
 # fun things
 
-You can put a file named 'command.bat' next to the smokescreen binary and when the bluescreen is triggered this batch file will be run.
+We can put a file named 'command.bat' next to the smokescreen binary and when the bluescreen is triggered this batch file will be run.
 First we're gonna launch a powershell script and do our things from there.
 
 command.bat:
